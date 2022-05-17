@@ -5,7 +5,7 @@ const { getCategories } = require('./controllers/categories.controller')
 
 app.use(express.json())
 
-app.get('/api/:categories', getCategories)
+app.get('/api/categories', getCategories)
 
 
 app.use((err,req,res,next) => {

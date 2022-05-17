@@ -3,11 +3,13 @@ const { fetchCategories } = require('../models/categories.model')
 
 
 const getCategories = (req, res, next) => {
-    const endPoint = req.params.categories;
-    fetchCategories(endPoint).then((categories) => {
-        res.status(200).send(categories);
+    fetchCategories().then((categories) => {
+        res.status(200).send({categories});
+        console.log(categories)
     }).catch((err) => {
+        console.log(err)
         next(err);
+        
     }
     )
 }
