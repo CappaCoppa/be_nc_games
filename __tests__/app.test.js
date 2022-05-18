@@ -42,6 +42,12 @@ describe("Categories requests' section", () => {
             expect(categories.length).toBe(categoriesData.length) 
         })
     })
+    test("Checks if the data came back with the right length", () => {
+        return request(app).get("/api/tom").expect(404).then((res) => {
+            const {msg} = res.body;
+            expect(msg).toBe("not found") 
+        })
+    })
     
 })
 
