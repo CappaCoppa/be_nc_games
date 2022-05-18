@@ -1,5 +1,8 @@
 # Northcoders House of Games API
 
-## Method using VS code
+## Method with VS-COde
 
-On the top left corner click file section then select 'Open folder' navigate to your git repo directory. when you are in your repo dir click file section at the top left corner and click 'new file'.Make two files one for your test enviroment and other for your development and name files accordingly to which enviroment you will be referencing **'.env.test' and ',env,development'.** Inside the files write the following codes accodringly to which enviroment you will be referencing => **'PGDATABASE=<YOUR_DATABASE_NAME>. ANd you are set.
+First of all locate your directory by click on the top left corner File section and selecting open folder. When you finaly located your directory create two text files and name them accordingly to your coding enviroment inside the  '.env.<FILENAME>' '.env.<FILENAME>'. Usually files are named 'test' and 'development'. When you created the files with assinged names write this code accordingly to which data base you are targeting.
+"PGDATABASE=<DATA_BASE_NAME>".
+
+**Do not forget to install the Dotenv dependency otherwise it will not work.**
