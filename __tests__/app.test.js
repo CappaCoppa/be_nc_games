@@ -19,6 +19,7 @@ describe("Categories requests' section", () => {
     test('Return the list of categories with correct properties data types', () => {
         return request(app).get('/api/categories').expect(200).then((res) => {
             const { categories }  = res.body;
+            expect(categories.length).toBe(4);
             categories.forEach((category) => {
                 expect(category).toMatchObject({
                     slug : expect.any(String),
@@ -26,20 +27,6 @@ describe("Categories requests' section", () => {
                     }
                     )
             })
-        })
-    })
-    test('Categories object must only have 2 object keys', () => {
-        return request(app).get('/api/categories').expect(200).then((res) => {
-            const { categories } = res.body;
-            categories.forEach(category => {
-                expect(Object.keys(category).length).toBe(2)
-            })
-        })
-    })
-    test("Checks if the data came back with the right length", () => {
-        return request(app).get("/api/categories").expect(200).then((res) => {
-            const {categories} = res.body;
-            expect(categories.length).toBe(categoriesData.length) 
         })
     })
     test("Checks if the data came back with the right length", () => {
