@@ -1,6 +1,5 @@
 const { getCategories } = require('./controllers/categories.controller')
-const {getReviews} = require('./controllers/review.constroller.js')
-const updateReview = require("./controller/reviews.controller.js")
+const {getReviews, updateReview} = require('./controllers/review.controller.js')
 const express = require("express");
 const app = express();
 
@@ -12,7 +11,7 @@ app.patch('/api/reviews/:review_id', updateReview)
 
 
 app.use((err , req, res, next) => {
-    const { code } = err;
+    const { code, status, msg } = err;
     if(code === "22P02") res.status(400).send({msg : "something that is not a number as the id in the path"})
     else if(status === 400) res.status(status).send({msg});
     else next(err)
@@ -25,6 +24,11 @@ app.use((err, req, res, next) => {
     }else{
         next(err)
     }
+})
+
+app.use((err, req, res, next) => {
+    console.log(err)
+    res.status(500).send({msg : "Internal server error"})
 })
 
 app.all("*", (req ,res) => {

@@ -1,7 +1,7 @@
 
-const {fetchReviews} = require('../models/review.model.js')
+const {fetchReviews, updatedReview} = require('../models/review.model.js');
 
-const getReviews = (req, res, next) => {
+exports.getReviews = (req, res, next) => {
     const id = parseInt(req.params.review_id);
     fetchReviews(id).then((reviews) => {
         if(!reviews.length){
@@ -17,4 +17,14 @@ const getReviews = (req, res, next) => {
 }
 
 
-module.exports = {getReviews};
+
+exports.updateReview = (req, res, next) => {
+    console.log(req.body)
+    const id = parseInt(req.params.review_id)
+    updatedReview(id, req.body).then((updatedReview) => {
+        res.status(200).send({updatedReview})
+    }).catch(err => {
+        next(err)
+    })
+}
+
