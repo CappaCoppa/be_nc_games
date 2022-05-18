@@ -1,11 +1,18 @@
 const express = require('express');
 const app = express();
+const { getCategories } = require('./controllers/categories.controller')
 const {getReviews} = require('./controllers/review.constroller.js')
+
 
 app.use(express.json())
 
-
+app.get('/api/categories', getCategories)
 app.get("/api/reviews/:review_id", getReviews)
+
+app.all("*", (req ,res) => {
+    res.status(404).send({msg :"not found"})
+})
+
 
 app.use((err, req, res, next) => {
     const {status, msg} = err
@@ -22,12 +29,4 @@ app.use((err, req, res, next) => {
     }
 })
 
-
-
-
-
-
-
-
-
-module.exports = app;
+module.exports = app 
