@@ -39,7 +39,7 @@ describe('Reviews patch request test block', () => {
          })
          
     })
-    test("Check if object contains all they properties", () => {
+    test("Check if object contains all their properties", () => {
         return request(app).patch("/api/reviews/2").send({inc_votes : 100}).expect(200).then((res) => {
             const {updatedReview} = res.body;
             updatedReview.forEach(review => {
@@ -76,9 +76,14 @@ describe('Reviews patch request test block', () => {
     test("Returns an error when passed an invalid data type for inc_votes",()=>{
         return request(app).patch("/api/reviews/3").send({inc_votes : "Tom"}).expect(400).then((res) => {
             const {msg} = res.body
-            expect(msg).toBe("user passed something that is not a number im inc_votes");
+            expect(msg).toBe("user passed something that is not a number in inc_votes");
         })
     })
-    
+    test.only("Returns an error when passed an empty field for inc_votes",()=>{
+        return request(app).patch("/api/reviews/3").send().expect(400).then((res) => {
+            const {msg} = res.body
+            expect(msg).toBe("No object was passed to the request");
+        })
+    })
 
 })

@@ -13,8 +13,11 @@ updatedReview = (id, incObj) => {
                     return db.query(`UPDATE reviews SET votes = ${incVote} WHERE review_id = $1 RETURNING *`, [id]).then(({rows}) => {
                         return rows;
                     })
-                }else{
-                    return Promise.reject({status : 400 , msg : "user passed something that is not a number im inc_votes" })
+                }else if(!Object.keys(incObj).length){
+                    return Promise.reject({status : 400, msg : "No object was passed to the request"})
+                }
+                else{
+                    return Promise.reject({status : 400 , msg : "user passed something that is not a number in inc_votes" })
                 }
             }
         })
