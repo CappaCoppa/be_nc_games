@@ -3,7 +3,6 @@ const db =  require('../db/connection.js')
 const testData = require('../db/data/test-data')
 const seed = require('../db/seeds/seed')
 const app = require('../app.js')
-const categoriesData = require("../db/data/test-data/categories.js")
 
 beforeEach(() => {
     return seed(testData);
@@ -29,7 +28,7 @@ describe("Categories requests' section", () => {
             })
         })
     })
-    test("Checks if the data came back with the right length", () => {
+    test("Returns an error 404", () => {
         return request(app).get("/api/tom").expect(404).then((res) => {
             const {msg} = res.body;
             expect(msg).toBe("not found") 
