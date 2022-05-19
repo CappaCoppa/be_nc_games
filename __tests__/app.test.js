@@ -73,7 +73,7 @@ describe('Reviews  get request test block', () => {
             expect(msg).toBe("something that is not a number as the id in the path")
         })
     })
-    test.only("/api/reviews returns all reviews with all properties including comment_count", () => {
+    test("/api/reviews returns all reviews with all properties including comment_count", () => {
         return request(app).get("/api/reviews").expect(200).then((res) => {
             const {reviews} = res.body;
             reviews.forEach(review => {
