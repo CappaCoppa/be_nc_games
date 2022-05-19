@@ -62,8 +62,8 @@ describe('Reviews  get request test block', () => {
             })
         })
     })
-    test.only("/api/reviews/3?count=comment returns an reviews object with new property including total amount of comments with that id", () => {
-        return request(app).get("/api/reviews/1?count=comment").expect(200).then((res) => {
+    test.only("/api/reviews/1 returns an reviews object with new property including total amount of comments with that id", () => {
+        return request(app).get("/api/reviews/1").expect(200).then((res) => {
             const {reviews} = res.body;
             reviews.forEach(review => {
                 expect(review).toMatchObject({
