@@ -1,5 +1,6 @@
 
-const {fetchReviews, updatedReview} = require('../models/review.model.js');
+const {fetchReviews, updatedReview, fetchCommentsById} = require('../models/review.model.js');
+const {checkReviewExists} = require("../models/util.model.js")
 
 exports.getReviews = (req, res, next) => {
     const passedQuery = req.query.count;
@@ -28,3 +29,15 @@ exports.updateReview = (req, res, next) => {
     })
 }
 
+exports.getCommentsById = (req, res, next) => {
+    const id = parseInt(req.params.review_id);
+    return Promise.all([checkReviewExists(id), fetchCommentsById(id)]).then(promises => {
+        if(promises[1].length === 0){
+            res.status(200).send({msg : "found review but no comments to show"})
+        }else{
+            res.status(200).send({comments : promises[1]})
+        }
+    }).catch(err => {
+        next(err)
+    })
+}

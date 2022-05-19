@@ -1,7 +1,7 @@
 
 const getUsers = require("./controllers/users.controller.js")
 const { getCategories } = require('./controllers/categories.controller')
-const {getReviews, updateReview} = require('./controllers/review.controller.js')
+const {getReviews, updateReview, getCommentsById} = require('./controllers/review.controller.js')
 const express = require("express");
 const app = express();
 
@@ -11,6 +11,7 @@ app.get('/api/categories', getCategories)
 app.get("/api/reviews/:review_id", getReviews)
 app.patch('/api/reviews/:review_id', updateReview)
 app.get("/api/users", getUsers);
+app.get("/api/reviews/:review_id/comments", getCommentsById)
 
 
 app.use((err , req, res, next) => {
@@ -23,14 +24,13 @@ app.use((err , req, res, next) => {
 app.use((err, req, res, next) => {
     const {status, msg} = err
     if(status === 404){
-        res.status(err.status).send({msg : err.msg})
+        res.status(err.status).send({msg})
     }else{
         next(err)
     }
 })
 
 app.use((err, req, res, next) => {
-    console.log(err)
     res.status(500).send({msg : "Internal server error"})
 })
 

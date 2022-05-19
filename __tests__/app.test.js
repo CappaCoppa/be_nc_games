@@ -23,8 +23,7 @@ describe("Categories requests' section", () => {
                 expect(category).toMatchObject({
                     slug : expect.any(String),
                     description : expect.any(String)
-                    }
-                    )
+                    })
             })
         })
     })
@@ -38,6 +37,7 @@ describe("Categories requests' section", () => {
 })
 
 describe('Reviews  get request test block', () => {
+
     test('/api/reviews/1 returns an single object by reviews_id', () => {
         return request(app).get('/api/reviews/1').expect(200).then((res) => {
             const {reviews} = res.body
@@ -62,7 +62,7 @@ describe('Reviews  get request test block', () => {
             })
         })
     })
-    test.only("/api/reviews/1 returns an reviews object with new property including total amount of comments with that id", () => {
+    test("/api/reviews/1 returns an reviews object with new property including total amount of comments with that id", () => {
         return request(app).get("/api/reviews/1").expect(200).then((res) => {
             const {reviews} = res.body;
             reviews.forEach(review => {
@@ -82,6 +82,43 @@ describe('Reviews  get request test block', () => {
         })
     })
 
+
+
+    test("/api/reviews/3/comments return a list of comments with passed in review_id", () => {
+        return request(app).get("/api/reviews/2/comments").expect(200).then((res) => {
+            const {comments} = res.body;
+            comments.forEach(comment => {
+                expect(comment).toMatchObject({
+                    comment_id: expect.any(Number),
+                    body: expect.any(String),
+                    review_id: expect.any(Number),
+                    author: expect.any(String),
+                    votes: expect.any(Number),
+                    created_at: expect.any(String) 
+                })
+            })
+        })
+    })
+    test("/api/reviews/99/comments return an err0r 404 with message that such object with this id does not exist", () => {
+        return request(app).get("/api/reviews/99/comments").expect(404).then(res => {
+            const {msg} = res.body;
+            expect(msg).toBe("valid number in path but doesn't match id")
+        })
+    })
+
+    test("/api/reviews/4/comments return an err0r 404 with message that such object with this id does not exist", () => {
+        return request(app).get("/api/reviews/4/comments").expect(200).then(res => {
+            const {msg} = res.body;
+            expect(msg).toBe("found review but no comments to show")
+        })
+    })
+
+    test("/api/reviews/rar/comments return an err0r 404 with message that such object with this id does not exist", () => {
+        return request(app).get("/api/reviews/rar/comments").expect(400).then(res => {
+            const {msg} = res.body;
+            expect(msg).toBe("something that is not a number as the id in the path")
+        })
+    })
 
     test("/api/reviews/999 returns an error 404 with message that such object with this id does not exist", () =>{
         return request(app).get('/api/reviews/999').expect(404).then((res) => {
@@ -140,8 +177,7 @@ describe('Reviews patch request test block', () => {
                 review_img_url: expect.any(String),
                 created_at: expect.any(String),
                 votes: expect.any(Number)
-                })
-                
+                })  
             })
             
          })
@@ -191,7 +227,6 @@ describe('Users get request testing block', () => {
     test('Returns an error when passed wrong endpoint', () => {
         return request(app).get("/api/use").expect(404).then(res => {
             const {msg} = res.body
-            console.log(msg)
             expect(msg).toBe("not found")
         })
     });
