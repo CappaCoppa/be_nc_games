@@ -166,8 +166,13 @@ describe('Users get request testing block', () => {
             })
         })
     });
+    test('Returns an error when passed wrong endpoint', () => {
+        return request(app).get("/api/use").expect(404).then(res => {
+            const {msg} = res.body
+            console.log(msg)
+            expect(msg).toBe("not found")
+        })
+    });
     
 });
-
-}) 
 
