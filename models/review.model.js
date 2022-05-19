@@ -1,9 +1,23 @@
 const db = require('../db/connection.js')
 
 
-exports.fetchReviews = (id) => {
+exports.fetchReviews = (id, query) => {
     if(typeof id === "number"){
-        return db.query("SELECT * FROM reviews WHERE review_id = $1 ",[id]).then(({rows}) => {
+        if(query === "comment"){
+            return db.query(`SELECT COUNT(*) FROM comments WHERE review_id = $1`,[id]).then(({rows}) => {
+                const fun = () =>{ return db.query("SELECT * FROM reviews WHERE review_id=$1",[id])
+                } 
+                return Promise.all([rows[0], fun()])
+            }).then(data => {
+                const comments = data[0];
+                const obj = data[1].rows[0];
+                obj.comments_count = parseInt(comments.count)
+                console.log(obj)
+                return [obj]
+
+            })
+        }
+        return db.query("SELECT * FROM reviews WHERE review_id = $1",[id]).then(({rows}) => {
             return rows
         })
     }
