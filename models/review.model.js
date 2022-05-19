@@ -34,3 +34,9 @@ exports.updatedReview = (id, incObj) => {
     }
 }
 
+exports.fetchAllReviews = () => {
+    return db.query("SELECT * FROM reviews").then(({rows}) => {
+        return rows
+    })
+}
+

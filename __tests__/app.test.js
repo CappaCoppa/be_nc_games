@@ -73,7 +73,11 @@ describe('Reviews  get request test block', () => {
             expect(msg).toBe("something that is not a number as the id in the path")
         })
     })
-    
+    test("/api/reviews returns all reviews", () => {
+        return request(app).get("/api/reviews").then((res) => {
+            
+        })
+    })
 });
 
 

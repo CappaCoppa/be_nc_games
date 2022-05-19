@@ -1,5 +1,5 @@
 
-const {fetchReviews, updatedReview} = require('../models/review.model.js');
+const {fetchReviews, updatedReview, fetchAllReviews} = require('../models/review.model.js');
 
 exports.getReviews = (req, res, next) => {
     const id = parseInt(req.params.review_id);
@@ -16,15 +16,19 @@ exports.getReviews = (req, res, next) => {
 
 }
 
-
-
 exports.updateReview = (req, res, next) => {
-    console.log(req.body)
     const id = parseInt(req.params.review_id)
     updatedReview(id, req.body).then((updatedReview) => {
         res.status(200).send({updatedReview})
     }).catch(err => {
         next(err)
     })
+}
+
+exports.getAllReviews = (req,res,next) => {
+    fetchAllReviews().then(reviews => {
+        console.log(reviews)
+    })
+
 }
 

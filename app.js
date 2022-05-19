@@ -1,12 +1,13 @@
 const { getCategories } = require('./controllers/categories.controller')
-const {getReviews, updateReview} = require('./controllers/review.controller.js')
+const {getReviews, updateReview, getAllReviews} = require('./controllers/review.controller.js')
 const express = require("express");
 const app = express();
 
 app.use(express.json())
 
 app.get('/api/categories', getCategories)
-app.get("/api/reviews/:review_id", getReviews)
+app.get('/api/reviews', getAllReviews)
+app.get('/api/reviews/:review_id', getReviews)
 app.patch('/api/reviews/:review_id', updateReview)
 
 
