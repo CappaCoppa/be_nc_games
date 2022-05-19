@@ -2,7 +2,8 @@ const db = require("../db/connection.js");
 const request = require("supertest");
 const app = require("../app.js");
 const testData = require("../db/data/test-data");
-const seed = require("../db/seeds/seed")
+const seed = require("../db/seeds/seed");
+const reviews = require("../db/data/test-data/reviews.js");
 
 beforeEach(() => {
     return seed(testData)
@@ -61,6 +62,27 @@ describe('Reviews  get request test block', () => {
             })
         })
     })
+    test.only("/api/reviews/1 returns an reviews object with new property including total amount of comments with that id", () => {
+        return request(app).get("/api/reviews/1").expect(200).then((res) => {
+            const {reviews} = res.body;
+            reviews.forEach(review => {
+                expect(review).toMatchObject({
+                    review_id : expect.any(Number),
+                    title : expect.any(String),
+                    review_body : expect.any(String),
+                    designer : expect.any(String),
+                    review_img_url : expect.any(String),
+                    votes : expect.any(Number),
+                    category : expect.any(String),
+                    owner : expect.any(String),
+                    created_at : expect.any(String),
+                    comments_count : expect.any(Number),
+                })
+            })
+        })
+    })
+
+
     test("/api/reviews/999 returns an error 404 with message that such object with this id does not exist", () =>{
         return request(app).get('/api/reviews/999').expect(404).then((res) => {
             const {msg} = res.body;
