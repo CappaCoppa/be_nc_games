@@ -10,7 +10,7 @@ beforeEach(() => {
 
 afterAll(() => {
     return db.end()
-}) 
+})
 
 describe("Categories requests' section", () => {
 
@@ -152,4 +152,22 @@ describe('Reviews patch request test block', () => {
     })
 
 })
+
+describe('Users get request testing block', () => {
+    test('Returns all users object in an array with all properties', () => {
+        return request(app).get("/api/users").expect(200).then(res => {
+            const {users} = res.body
+            users.forEach(user => {
+                expect(user).toMatchObject({
+                    username : expect.any(String),
+                    name : expect.any(String),
+                    avatar_url : expect.any(String),
+                })
+            })
+        })
+    });
+    
+});
+
+}) 
 
