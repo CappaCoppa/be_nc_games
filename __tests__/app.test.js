@@ -94,7 +94,25 @@ describe('Reviews  get request test block', () => {
             expect(msg).toBe("something that is not a number as the id in the path")
         })
     })
-    
+    test("/api/reviews returns all reviews with all properties including comment_count", () => {
+        return request(app).get("/api/reviews").expect(200).then((res) => {
+            const {reviews} = res.body;
+            reviews.forEach(review => {
+                expect(review).toMatchObject({
+                    review_id : expect.any(Number),
+                    title : expect.any(String),
+                    review_body : expect.any(String),
+                    designer : expect.any(String),
+                    review_img_url : expect.any(String),
+                    votes : expect.any(Number),
+                    category : expect.any(String),
+                    owner : expect.any(String),
+                    created_at : expect.any(String),
+                    comments_count : expect.any(Number)
+                })
+            })
+        })
+    })
 });
 
 
