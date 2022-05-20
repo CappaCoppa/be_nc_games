@@ -1,6 +1,6 @@
 
 const {fetchReviews, updatedReview, fetchPostedComment} = require('../models/review.model.js');
-const {validateUsername} = require("../models/util.model.js")
+const {validateUsername, checkReviewExists} = require("../models/util.model.js")
 
 
 exports.getReviews = (req, res, next) => {
@@ -31,14 +31,22 @@ exports.updateReview = (req, res, next) => {
 }
 
 exports.postComment = (req, res, next) => {
-     const username = req.body.username;
-     const body = req.body.body;
-     const id = req.params.review_id
-     if(username && body){
-         Promise.all([validateUsername(username), fetchPostedComment(username, body, id)])   
-    }else{
-        Promise.reject({status:400 , msg : "body does not contain both mandatory keys"})
-    }
+    const body = req.body
+    console.log(body)
+    const id = req.params.review_id;
+    checkReviewExists(id).then(() => {
+        return fetchPostedComment(body ,id).then((comment) => {
+            console.log(comment)
+            res.status(201).send({comment});
+        })
+         }).catch(err => {
+             console.log(err)
+             next(err)
+         })
 
+        //  return Promise.all([validateUsername(username), checkReviewExists(id), fetchPostedComment(body, id, username)]).then(res => {
+        //     res.status(201).send({comment : res[2]})})
+        //  }else{
+        // return Promise.reject({status:400 , msg : "body does not contain both mandatory keys"})
 }
 
