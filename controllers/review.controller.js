@@ -1,10 +1,9 @@
-const {fetchReviews, updatedReview, fetchAllReviews,  fetchCommentsById, fetchPostedComment} = require('../models/review.model.js');
+const {fetchReview, updatedReview, fetchAllReviews,  fetchCommentsById, fetchPostedComment} = require('../models/review.model.js');
 const {checkReviewExists} = require("../models/util.model.js")
 
-exports.getReviews = (req, res, next) => {
-    const passedQuery = req.query.count;
+exports.getReview = (req, res, next) => {
     const id = parseInt(req.params.review_id);
-    fetchReviews(id, passedQuery).then((reviews) => {
+    fetchReview(id).then((reviews) => {
         if(!reviews.length){
             return  Promise.reject({status : 404, msg : 'Valid number but no reviews with that id'});
         }else {
@@ -47,15 +46,13 @@ exports.getCommentsById = (req, res, next) => {
 
 exports.postComment = (req, res, next) => {
     const body = req.body
-    console.log(body)
     const id = req.params.review_id;
     checkReviewExists(id).then(() => {
         return fetchPostedComment(body ,id).then((comment) => {
-            console.log(comment)
             res.status(201).send({comment});
         })
          }).catch(err => {
-             console.log(err)
              next(err)
          })
 
+        }

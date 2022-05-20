@@ -46,7 +46,7 @@ describe('Reviews  get request test block', () => {
     test('/api/reviews/3 checks if returned object has all properties', () => {
         return request(app).get('/api/reviews/3').expect(200).then((res) => {
             const {reviews} = res.body
-            expect(reviews.length).toBeGreaterThan(0)
+            expect(reviews.length).toEqual(1)
             reviews.forEach(review => {
                 expect(review).toMatchObject({
                     review_id : expect.any(Number),
@@ -63,10 +63,10 @@ describe('Reviews  get request test block', () => {
         })
     })
     test("/api/reviews/2 returns an reviews object with new property including total amount of comments with that id", () => {
-        return request(app).get("/api/reviews/2?count=comments").expect(200).then((res) => {
+        return request(app).get("/api/reviews/2").expect(200).then((res) => {
           
             const {reviews} = res.body;
-            expect(reviews.length).toBeGreaterThan(0)
+            expect(reviews.length).toEqual(1)
             reviews.forEach(review => {
                 expect(review).toMatchObject({
                     review_id : expect.any(Number),
@@ -87,9 +87,9 @@ describe('Reviews  get request test block', () => {
 
 
     test("/api/reviews/3/comments return a list of comments with passed in review_id", () => {
-        return request(app).get("/api/reviews/2/comments").expect(200).then((res) => {
+        return request(app).get("/api/reviews/3/comments").expect(200).then((res) => {
             const {comments} = res.body;
-            expect(comments.length).toBeGreaterThan(0)
+            expect(comments.length).toEqual(3)
             comments.forEach(comment => {
                 expect(comment).toMatchObject({
                     comment_id: expect.any(Number),
@@ -138,6 +138,7 @@ describe('Reviews  get request test block', () => {
     test("/api/reviews returns all reviews with all properties including comment_count", () => {
         return request(app).get("/api/reviews").expect(200).then((res) => {
             const {reviews} = res.body;
+            expect(reviews.length).toEqual(13)
             reviews.forEach(review => {
                 expect(review).toMatchObject({
                     review_id : expect.any(Number),
@@ -187,7 +188,7 @@ describe('Reviews patch request test block', () => {
     test("Check if object contains all their properties", () => {
         return request(app).patch("/api/reviews/2").send({inc_votes : 100}).expect(200).then((res) => {
             const {updatedReview} = res.body;
-            expect(updatedReview.length).toBeGreaterThan(0)
+            expect(updatedReview.length).toEqual(1)
             updatedReview.forEach(review => {
                 expect(review).toMatchObject({
                 review_id: expect.any(Number),
@@ -237,7 +238,7 @@ describe('Users get request testing block', () => {
     test('Returns all users object in an array with all properties', () => {
         return request(app).get("/api/users").expect(200).then(res => {
             const {users} = res.body
-            expect(users.length).toBeGreaterThan(0)
+            expect(users.length).toEqual(4)
             users.forEach(user => {
                 expect(user).toMatchObject({
                     username : expect.any(String),
@@ -261,7 +262,6 @@ describe('Comments Post request testing block', () => {
     test("/api/reviews/:review_id/comment returns a posted comment", () => {
         const newComment = {username:'mallionaire', body:"greates game of all time"};
         return request(app).post("/api/reviews/2/comments").send(newComment).expect(201).then((res) => {
-            console.log(res.body)
             const {comment} = res.body
             expect(comment).toEqual({
                 comment_id : expect.any(Number),
