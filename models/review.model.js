@@ -2,15 +2,18 @@ const db = require('../db/connection.js');
 const format = require("pg-format");
 
 
-exports.fetchReviews = (id) => {
+exports.fetchReviews = (id, query) => {
     if(typeof id === "number"){
-        let queryMSg = `
+        let queryMsg = "SELECT * FROM reviews WHERE review_id = $1 "
+        if (query === "comments"){
+            queryMsg = `
             SELECT reviews.*, COUNT(comments.review_id)::INT AS comments_count 
             FROM reviews 
             LEFT JOIN comments ON comments.review_id = reviews.review_id WHERE reviews.review_id = $1 
             GROUP BY reviews.review_id`
-        
-        return db.query(queryMSg,[id]).then(({rows}) => {
+   
+        }
+        return db.query(queryMsg,[id]).then(({rows}) => {
             return rows
         })
     }
@@ -47,6 +50,7 @@ exports.fetchPostedComment = (commentBody, id) => {
     })
 }
 
+
 exports.fetchAllReviews = () => {
     return db.query(`
     SELECT reviews.*, COUNT(comments.review_id)::INT as comments_count
@@ -57,4 +61,13 @@ exports.fetchAllReviews = () => {
         return rows
     })
 }
+
+exports.fetchCommentsById = (id) => {
+    if(typeof id === "number"){
+        return db.query("SELECT * FROM comments WHERE review_id = $1", [id]).then(({rows}) =>{
+                return rows            
+        })
+    }}
+
+
 
