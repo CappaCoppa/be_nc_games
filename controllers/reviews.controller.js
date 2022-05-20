@@ -2,9 +2,8 @@
 const {fetchReviews, updatedReview, fetchAllReviews} = require('../models/review.model.js');
 
 exports.getReviews = (req, res, next) => {
-    const passedQuery = req.query.count;
     const id = parseInt(req.params.review_id);
-    fetchReviews(id, passedQuery).then((reviews) => {
+    fetchReviews(id).then((reviews) => {
         if(!reviews.length){
             return  Promise.reject({status : 404, msg : 'Valid number but no reviews with that id'});
         }else {
