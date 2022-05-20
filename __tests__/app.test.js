@@ -297,10 +297,24 @@ describe('Comments Post request testing block', () => {
 });
 
 describe('Comments delete request testing block', () => {
-    test("Return an empty space after the deletion of the comment with specifi comment_id", () => {
-        return request(app).delete("/api/comments/2").expect(204).then((res) => {
+    test.only("Return an empty space after the deletion of the comment with specifi comment_id", () => {
+        return request(app).delete("/api/comments/1").expect(204).then((res) => {
             console.log(res.body)
             expect(Object.keys(res.body).length).toEqual(0)
         })
-    })    
+    })
+    test("Return an 404 error when passed valid number as an ID but out of the range", () => {
+        return request(app).delete("/api/comments/99").expect(404).then(res => {
+            const {msg} = res.body;
+            console.log(msg)
+            expect(msg).toEqual("comment_id in path but does not exist")
+        })
+    })   
+    test("Return an 400 error when passed unvalid id", () => {
+        return request(app).delete("/api/comments/tom").expect(400).then(res => {
+            const {msg} = res.body;
+            console.log(msg)
+            expect(msg).toEqual("something that is not a number as the id in the path")
+        })
+    }) 
 });

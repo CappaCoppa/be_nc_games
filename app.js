@@ -28,7 +28,7 @@ app.use((err , req, res, next) => {
 app.use((err, req, res, next) => {
     const {status, msg} = err
     if(status === 404){
-        res.status(err.status).send({msg})
+        res.status(status).send({msg})
     }else{
         next(err)
     }
