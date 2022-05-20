@@ -26,8 +26,14 @@ exports.updateReview = (req, res, next) => {
 }
 
 exports.getAllReviews = (req,res,next) => {
-    fetchAllReviews().then(reviews => {
-        res.status(200).send({reviews})
+    fetchAllReviews(req.query).then(reviews => {
+        if(!reviews.length){
+        return Promise.reject({status:404, msg: "user tries to enter a non existing category"})
+        }else{
+            res.status(200).send({reviews})
+        }
+    }).catch(err => {
+        next(err)
     })
 }
 

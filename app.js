@@ -21,6 +21,9 @@ app.use((err , req, res, next) => {
     if(code === "22P02") res.status(400).send({msg : "something that is not a number as the id in the path"})
     else if(code === "23502") res.status(400).send({msg : "body does not contain both mandatory keys"})
     else if(code === "23503") res.status(404).send({msg : "user not in the database tries to post"})
+    else if(code === "42703") res.status(400).send({msg : "user tries to enter a non-valid sort-by query"})
+    else if(code === "42601") res.status(400).send({msg : "user tries to enter a non-valid order query"})
+    else if(code === "42601") res.status(404).send({msg : "user tries to enter a non-valid order query"})
     else if(status === 400) res.status(status).send({msg});
     else next(err)
 })
