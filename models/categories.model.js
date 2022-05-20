@@ -1,7 +1,7 @@
 const db = require('../db/connection.js')
 
 
-const fetchCategories = () => {
+exports.fetchCategories = () => {
 
     return db.query('SELECT * FROM categories').then((res) => {
         if(!res.rows.length){
@@ -12,4 +12,6 @@ const fetchCategories = () => {
     })
     }
 
-module.exports = {fetchCategories};
+exports.fetchDeletedComment = (id) => {
+    return db.query("DELETE FROM comments WHERE comment_id = $1",[id])
+}
