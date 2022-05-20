@@ -43,12 +43,24 @@ exports.updatedReview = (id, incObj) => {
     }
 }
 
+
+exports.fetchAllReviews = () => {
+    return db.query(`
+    SELECT reviews.*, COUNT(comments.review_id)::INT as comments_count
+    FROM reviews
+    LEFT JOIN comments ON comments.review_id = reviews.review_id
+    GROUP BY reviews.review_id
+    `).then(({rows}) => {
+        return rows
+    })
+}
+
 exports.fetchCommentsById = (id) => {
     if(typeof id === "number"){
         return db.query("SELECT * FROM comments WHERE review_id = $1", [id]).then(({rows}) =>{
-                return rows
-            
+                return rows            
         })
-            
-    }
-}
+    }}
+
+
+
