@@ -1,4 +1,5 @@
-const db = require('../db/connection.js')
+const db = require('../db/connection.js');
+const format = require("pg-format");
 
 
 exports.fetchReviews = (id, query) => {
@@ -41,6 +42,12 @@ exports.updatedReview = (id, incObj) => {
             }
         })
     }
+}
+exports.fetchPostedComment = (commentBody, id) => {
+    const {username, body} = commentBody;
+    return db.query(`INSERT INTO comments (body, review_id, author) VALUES ($1, $2, $3) RETURNING *`, [body, id, username]).then(({rows}) => {
+        return rows[0]
+    })
 }
 
 

@@ -3,7 +3,6 @@ const request = require("supertest");
 const app = require("../app.js");
 const testData = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
-const reviews = require("../db/data/test-data/reviews.js");
 
 beforeEach(() => {
     return seed(testData)
@@ -41,7 +40,7 @@ describe('Reviews  get request test block', () => {
     test('/api/reviews/1 returns an single object by reviews_id', () => {
         return request(app).get('/api/reviews/1').expect(200).then((res) => {
             const {reviews} = res.body
-            expect(reviews[0]).toEqual({"category": "euro game", "created_at": "2021-01-18T10:00:20.514Z", "designer": "Uwe Rosenberg", "owner": "mallionaire", "review_body": "Farmyard fun!", "review_id": 1, "review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png", "title": "Agricola", "votes": 1})
+            expect(reviews[0]).toEqual(expect.objectContaining({"category": "euro game", "created_at": "2021-01-18T10:00:20.514Z", "designer": "Uwe Rosenberg", "owner": "mallionaire", "review_body": "Farmyard fun!", "review_id": 1, "review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png", "title": "Agricola", "votes": 1}))
         })
     })
     test('/api/reviews/3 checks if returned object has all properties', () => {
@@ -65,6 +64,7 @@ describe('Reviews  get request test block', () => {
     })
     test("/api/reviews/2 returns an reviews object with new property including total amount of comments with that id", () => {
         return request(app).get("/api/reviews/2?count=comments").expect(200).then((res) => {
+          
             const {reviews} = res.body;
             expect(reviews.length).toBeGreaterThan(0)
             reviews.forEach(review => {
@@ -256,3 +256,42 @@ describe('Users get request testing block', () => {
     
 });
 
+
+describe('Comments Post request testing block', () => {
+    test("/api/reviews/:review_id/comment returns a posted comment", () => {
+        const newComment = {username:'mallionaire', body:"greates game of all time"};
+        return request(app).post("/api/reviews/2/comments").send(newComment).expect(201).then((res) => {
+            console.log(res.body)
+            const {comment} = res.body
+            expect(comment).toEqual({
+                comment_id : expect.any(Number),
+                body : "greates game of all time",
+                votes : 0,
+                author: "mallionaire",
+                review_id : 2,
+                created_at : expect.any(String)
+            })
+        })
+    })
+    test("Status 400 error msg : missing keys", () => {
+        return request(app).post("/api/reviews/2/comments").send({}).expect(400).then((res) => {
+            const {msg} = res.body
+            expect(msg).toBe("body does not contain both mandatory keys")
+        })
+    })
+    test("Status 404 error msg : username does not exist", () => {
+        const newComment = {username:'mallioe', body:"greates game of all time"};
+        return request(app).post("/api/reviews/2/comments").send(newComment).expect(404).then((res) => {
+            const {msg} = res.body
+            expect(msg).toBe("user not in the database tries to post")
+        })
+    })
+    test("Status 404 error msg : id valid but does not exists", () => {
+        const newComment = {username:'mallionaire', body:"greates game of all time"};
+        return request(app).post("/api/reviews/99/comments").send(newComment).expect(404).then((res) => {
+            const {msg} = res.body
+            expect(msg).toBe("valid number in path but doesn't match id")
+        })
+    })
+    
+});
