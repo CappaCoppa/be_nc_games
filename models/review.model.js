@@ -39,4 +39,9 @@ exports.updatedReview = (id, incObj) => {
         })
     }
 }
+exports.fetchPostedComment = (username, body ,id) => {
+    return db.query(`
+    INSERT INTO comments (author, body, review_id)
+    VALUES %L RETURNING *`, [username, body, id])
+}
 

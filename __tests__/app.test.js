@@ -198,3 +198,12 @@ describe('Users get request testing block', () => {
     
 });
 
+
+describe('Comments Post request testing block', () => {
+    test.only("/apie/reviews/:review_id:comment return a posted comment", () => {
+        return request(app).post("/api/reviews/:review_id/comments").send({username : 'mallionaire', body: "Greates game of all time"}).expect(201).then((res) => {
+            console.log(res.body)
+        })
+    })
+    
+});

@@ -1,7 +1,7 @@
 
 const getUsers = require("./controllers/users.controller.js")
 const { getCategories } = require('./controllers/categories.controller')
-const {getReviews, updateReview} = require('./controllers/review.controller.js')
+const {getReviews, updateReview, postComment} = require('./controllers/review.controller.js')
 const express = require("express");
 const app = express();
 
@@ -11,7 +11,7 @@ app.get('/api/categories', getCategories)
 app.get("/api/reviews/:review_id", getReviews)
 app.patch('/api/reviews/:review_id', updateReview)
 app.get("/api/users", getUsers);
-app.post("/api/reviews/:review_id/comments")
+app.post("/api/reviews/:review_id/comments", postComment)
 
 
 app.use((err , req, res, next) => {
