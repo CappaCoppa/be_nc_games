@@ -11,6 +11,7 @@ app.get('/api/categories', getCategories)
 app.get("/api/reviews/:review_id", getReviews)
 app.patch('/api/reviews/:review_id', updateReview)
 app.get("/api/users", getUsers);
+app.post("/api/reviews/:review_id/comments")
 
 
 app.use((err , req, res, next) => {
