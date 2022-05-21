@@ -159,9 +159,10 @@ describe('Reviews  get request test block', () => {
 
 
 describe('Reviews patch request test block', () => {
-    test("Return an object with update votes count", () => {
+    test("Return an object with updated votes count", () => {
         return request(app).patch("/api/reviews/2").send({inc_votes : 100}).expect(200).then((res) => {
             const {updatedReview} = res.body
+            console.log(updatedReview)
             expect(updatedReview[0]).toEqual({
                 review_id: 2,
                 title: 'Jenga',
@@ -235,7 +236,7 @@ describe('Reviews patch request test block', () => {
 })
 
 describe('Users get request testing block', () => {
-    test('Returns all users object in an array with all properties', () => {
+    test('Returns an array of user objects with all properties', () => {
         return request(app).get("/api/users").expect(200).then(res => {
             const {users} = res.body
             expect(users.length).toEqual(4)
