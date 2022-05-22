@@ -193,6 +193,12 @@ describe('Reviews  get request test block', () => {
             expect(msg).toBe("user tries to enter a non existing category")
         })
     })
+    test("Category exists but no reviews associated with it ", () => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=desc&category=children%27s%20games").expect(200).then(res => {
+            const { msg } = res.body;
+            expect(msg).toBe("review category exists but there are no associated reviews with it")
+        })
+    })
 
 
 });
