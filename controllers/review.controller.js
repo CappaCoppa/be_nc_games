@@ -26,7 +26,7 @@ exports.updateReview = (req, res, next) => {
 }
 
 exports.getAllReviews = (req,res,next) => {
-    return Promise.all([checkCategoryExists(req.query.category), fetchAllReviews(req.query)]).then(promiseArray => {
+    Promise.all([checkCategoryExists(req.query.category), fetchAllReviews(req.query)]).then(promiseArray => {
         if(!promiseArray[1].length){
             res.status(200).send({msg : "review category exists but there are no associated reviews with it"})
         }

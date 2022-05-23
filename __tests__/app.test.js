@@ -160,7 +160,6 @@ describe('Reviews  get request test block', () => {
         return request(app).get("/api/reviews?sort_by=review_id&order=asc&category=social%20deduction").expect(200).then((res) => {
             const {reviews} = res.body
             expect(reviews).toBeSortedBy("review_id",{
-                coerse:true,
                 descending: false,
             })
             expect(reviews.length).toBe(11)
@@ -175,6 +174,16 @@ describe('Reviews  get request test block', () => {
 
         })
     })
+    test("/api/reviews?sort_by=review_id&order=asc Returna a full list of unfiltered, sorted by review id and in ascending order review objects",() => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=asc").expect(200).then((res) => {
+            const { reviews } = res.body
+            expect(reviews).toBeSortedBy("review_id", {
+                descending: false
+            })
+            expect(reviews.length).toBe(13)
+        })
+    })
+
     test("Returns an error when passed invalid sort_by",() => {
         return request(app).get("/api/reviews?sort_by=dog&order=asc&category=social%20deduction").expect(400).then(res => {
             const { msg } = res.body;
@@ -199,6 +208,7 @@ describe('Reviews  get request test block', () => {
             expect(msg).toBe("review category exists but there are no associated reviews with it")
         })
     })
+    
 
 
 });
