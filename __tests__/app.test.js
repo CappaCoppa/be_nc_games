@@ -297,7 +297,7 @@ describe('Comments Post request testing block', () => {
 });
 
 describe('Comments delete request testing block', () => {
-    test.only("Return an empty space after the deletion of the comment with specifi comment_id", () => {
+    test("Return an empty space after the deletion of the comment with specifi comment_id", () => {
         return request(app).delete("/api/comments/1").expect(204).then((res) => {
             expect(Object.keys(res.body).length).toEqual(0)
         })
