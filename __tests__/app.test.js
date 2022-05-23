@@ -298,9 +298,7 @@ describe('Comments Post request testing block', () => {
 
 describe('Comments delete request testing block', () => {
     test("Return an empty space after the deletion of the comment with specifi comment_id", () => {
-        return request(app).delete("/api/comments/1").expect(204).then((res) => {
-            expect(Object.keys(res.body).length).toEqual(0)
-        })
+        return request(app).delete("/api/comments/1").expect(204)
     })
     test("Return an 404 error when passed valid number as an ID but out of the range", () => {
         return request(app).delete("/api/comments/99").expect(404).then(res => {
