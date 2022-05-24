@@ -1,5 +1,5 @@
 
-const { getCategories } = require('./controllers/categories.controller')
+const { getCategories , deleteComment } = require('./controllers/categories.controller')
 const {getReview, updateReview, getAllReviews, getCommentsById, postComment} = require('./controllers/review.controller.js')
 const getUsers = require("./controllers/users.controller.js")
 const express = require("express");
@@ -14,7 +14,7 @@ app.get("/api/users", getUsers);
 app.get('/api/reviews', getAllReviews)
 app.get("/api/reviews/:review_id/comments", getCommentsById)
 app.post("/api/reviews/:review_id/comments", postComment)
-
+app.delete("/api/comments/:comment_id", deleteComment)
 
 app.use((err , req, res, next) => {
     const { code, status, msg } = err;

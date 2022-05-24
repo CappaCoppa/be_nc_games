@@ -1,8 +1,8 @@
 
-const { fetchCategories } = require('../models/categories.model')
+const { fetchCategories, fetchDeletedComment } = require('../models/categories.model')
 
 
-const getCategories = (req, res, next) => {
+exports.getCategories = (req, res, next) => {
     fetchCategories().then((categories) => {
         res.status(200).send({categories});
     }).catch((err) => {
@@ -12,4 +12,11 @@ const getCategories = (req, res, next) => {
     )
 }
 
-module.exports = {getCategories}
+exports.deleteComment = (req, res, next) => {
+    const id = req.params.comment_id
+    fetchDeletedComment(id).then(() => {
+            res.status(204).send()
+    }).catch(err => {
+        next(err)
+    })
+}
