@@ -3,6 +3,7 @@ const request = require("supertest");
 const app = require("../app.js");
 const testData = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
+require("jest-sorted")
 
 beforeEach(() => {
     return seed(testData)
@@ -155,6 +156,61 @@ describe('Reviews  get request test block', () => {
             })
         })
     })
+    test("/api/reviews?sort_by='review_id'&order='asc'&category='social%20deduction' Returns sorted by table order by asc and filtered by social deduction category",() => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=asc&category=social%20deduction").expect(200).then((res) => {
+            const {reviews} = res.body
+            expect(reviews).toBeSortedBy("review_id",{
+                descending: false,
+            })
+            expect(reviews.length).toBe(11)
+            reviews.forEach(review => {
+                expect(review).toMatchObject(
+                    {
+                        category: 'social deduction',
+                    }
+           
+                )
+            })
+
+        })
+    })
+    test("/api/reviews?sort_by=review_id&order=asc Returna a full list of unfiltered, sorted by review id and in ascending order review objects",() => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=asc").expect(200).then((res) => {
+            const { reviews } = res.body
+            expect(reviews).toBeSortedBy("review_id", {
+                descending: false
+            })
+            expect(reviews.length).toBe(13)
+        })
+    })
+
+    test("Returns an error when passed invalid sort_by",() => {
+        return request(app).get("/api/reviews?sort_by=dog&order=asc&category=social%20deduction").expect(400).then(res => {
+            const { msg } = res.body;
+            expect(msg).toBe("user tries to enter a non-valid sort-by query")
+        })
+    })
+    test("Returns an error when passed invalid order-by",() => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=bla&category=social%20deduction").expect(400).then(res => {
+            const { msg } = res.body;
+            expect(msg).toBe("user tries to enter a non-valid order query")
+        })
+    })
+    test("Returns an error when passed invalid filter-by",() => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=desc&category=tata").expect(404).then(res => {
+            const { msg } = res.body;
+            expect(msg).toBe("user tries to enter a non existing category")
+        })
+    })
+    test("Category exists but no reviews associated with it ", () => {
+        return request(app).get("/api/reviews?sort_by=review_id&order=desc&category=children%27s%20games").expect(200).then(res => {
+            const { msg } = res.body;
+            expect(msg).toBe("review category exists but there are no associated reviews with it")
+        })
+    })
+    
+
+
 });
 
 

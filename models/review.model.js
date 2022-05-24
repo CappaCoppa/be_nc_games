@@ -39,13 +39,21 @@ exports.updatedReview = (id, incObj) => {
         })
     }
 }
-exports.fetchAllReviews = () => {
-    return db.query(`
+exports.fetchAllReviews = ({sort_by = "created_at", order = "desc", category}) => {
+    const validArr =[];
+    let query = `
     SELECT reviews.*, COUNT(comments.review_id)::INT as comments_count
     FROM reviews
-    LEFT JOIN comments ON comments.review_id = reviews.review_id
+    LEFT JOIN comments ON comments.review_id = reviews.review_id`
+    if(category) {
+        query += ` WHERE category= $1`
+        validArr.push(category)
+    }
+    query += ` 
     GROUP BY reviews.review_id
-    `).then(({rows}) => {
+    ORDER BY ${sort_by} ${order}
+    `
+    return db.query(query, validArr).then(({rows}) => {
         return rows
     })
 }
