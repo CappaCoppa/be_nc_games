@@ -12,7 +12,7 @@ afterAll(() => {
     return db.end()
 })
 
-describe("Categories requests' section", () => {
+describe("Categories' get request testing block", () => {
 
     test('Return the list of categories with correct properties data types', () => {
         return request(app).get('/api/categories').expect(200).then((res) => {
@@ -35,7 +35,7 @@ describe("Categories requests' section", () => {
     
 })
 
-describe('Reviews  get request test block', () => {
+describe('Reviews  get request testing block', () => {
 
     test('/api/reviews/1 returns an single object by reviews_id', () => {
         return request(app).get('/api/reviews/1').expect(200).then((res) => {
@@ -89,6 +89,7 @@ describe('Reviews  get request test block', () => {
     test("/api/reviews/3/comments return a list of comments with passed in review_id", () => {
         return request(app).get("/api/reviews/3/comments").expect(200).then((res) => {
             const {comments} = res.body;
+            console.log(comments)
             expect(comments.length).toEqual(3)
             comments.forEach(comment => {
                 expect(comment).toMatchObject({
@@ -292,6 +293,16 @@ describe('Comments Post request testing block', () => {
         return request(app).post("/api/reviews/99/comments").send(newComment).expect(404).then((res) => {
             const {msg} = res.body
             expect(msg).toBe("valid number in path but doesn't match id")
+        })
+    })
+
+describe("Apis' get request testing block", () => {
+    test.only("/api returns a list of endpoints data" , () => {
+        return request(app).get("/api").expect(200).then((res) => {
+        const {endpointData} = res.body;
+            expect(typeof endpointData).toBe("object")
+            expect(Object.keys(endpointData).length).toBe(9)
+            })
         })
     })
     

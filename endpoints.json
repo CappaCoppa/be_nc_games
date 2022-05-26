@@ -2,7 +2,6 @@
 "GET /api": {
   "description": "serves up a json representation of all the available endpoints of the api"
   },
-
 "GET /api/categories" : {
   "description" : "serves an array of cateogory list",
   "queries" : [],
@@ -94,6 +93,41 @@
     ]
   }
 
-}
+},
+"GET /api/reviews/:review_id/comments" : {
+  "description" : "Returns a list of filtered comment objects by passed in 'review_id'",
+  "exampleResponse" : {
+    "comments" : [
+      {
+          "comment_id": 6,
+          "body": "Not sure about dogs, but my cat likes to get involved with board games, the boxes are their particular favourite",
+          "review_id": 3,
+          "author": "philippaclaire9",
+          "votes": 10,
+          "created_at": "2021-03-27T19:49:48.110Z" 
+      }
+    ]
+  }
+
+},
+"POST /api/reviews/:review_id/comments" : {
+  "description" : "Returns a posted comment object to the database",
+  "body" : {"username":"<STRING>", "body": "<STRING>"},
+  "exampleResponse" : {
+    "comments" : [
+      {
+        "comment_id" : 1,
+        "body" : "greates game of all time",
+        "votes" : 0,
+        "author": "mallionaire",
+        "review_id" : 2,
+        "created_at" : "2021-03-27T19:49:48.110Z"
+      }
+    ]
+  }
+  },
+  "DELETE /api/comments/:comment_id" : {
+    "description" : "Deletes selected comment by 'comment_id'"
+  }
 }
 
