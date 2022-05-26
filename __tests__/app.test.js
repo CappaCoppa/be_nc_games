@@ -296,7 +296,7 @@ describe('Comments Post request testing block', () => {
         })
     })
 
-describe("Apis' get request testing block", () => {
+describe("Api get request testing block", () => {
     test.only("/api returns a list of endpoints data" , () => {
         return request(app).get("/api").expect(200).then((res) => {
         const {endpointData} = res.body;
