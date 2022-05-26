@@ -302,6 +302,7 @@ describe("Api Get request testing block", () => {
         const {endpointData} = res.body;
             expect(typeof endpointData).toBe("object")
             expect(Object.keys(endpointData).length).toBe(9)
+            
             })
         })
     })
