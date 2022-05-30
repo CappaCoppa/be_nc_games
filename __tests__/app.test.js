@@ -13,7 +13,7 @@ afterAll(() => {
     return db.end()
 })
 
-describe("Categories requests' section", () => {
+describe("Categories' get request testing block", () => {
 
     test('Return the list of categories with correct properties data types', () => {
         return request(app).get('/api/categories').expect(200).then((res) => {
@@ -36,7 +36,7 @@ describe("Categories requests' section", () => {
     
 })
 
-describe('Reviews  get request test block', () => {
+describe('Reviews  get request testing block', () => {
 
     test('/api/reviews/1 returns an single object by reviews_id', () => {
         return request(app).get('/api/reviews/1').expect(200).then((res) => {
@@ -90,6 +90,7 @@ describe('Reviews  get request test block', () => {
     test("/api/reviews/3/comments return a list of comments with passed in review_id", () => {
         return request(app).get("/api/reviews/3/comments").expect(200).then((res) => {
             const {comments} = res.body;
+            console.log(comments)
             expect(comments.length).toEqual(3)
             comments.forEach(comment => {
                 expect(comment).toMatchObject({
@@ -215,9 +216,10 @@ describe('Reviews  get request test block', () => {
 
 
 describe('Reviews patch request test block', () => {
-    test("Return an object with update votes count", () => {
+    test("Return an object with updated votes count", () => {
         return request(app).patch("/api/reviews/2").send({inc_votes : 100}).expect(200).then((res) => {
             const {updatedReview} = res.body
+            console.log(updatedReview)
             expect(updatedReview[0]).toEqual({
                 review_id: 2,
                 title: 'Jenga',
@@ -291,7 +293,7 @@ describe('Reviews patch request test block', () => {
 })
 
 describe('Users get request testing block', () => {
-    test('Returns all users object in an array with all properties', () => {
+    test('Returns an array of user objects with all properties', () => {
         return request(app).get("/api/users").expect(200).then(res => {
             const {users} = res.body
             expect(users.length).toEqual(4)
@@ -347,6 +349,17 @@ describe('Comments Post request testing block', () => {
         return request(app).post("/api/reviews/99/comments").send(newComment).expect(404).then((res) => {
             const {msg} = res.body
             expect(msg).toBe("valid number in path but doesn't match id")
+        })
+    })
+
+describe("Api Get request testing block", () => {
+    test.only("/api returns a list of endpoints data" , () => {
+        return request(app).get("/api").expect(200).then((res) => {
+        const {endpointData} = res.body;
+            expect(typeof endpointData).toBe("object")
+            expect(Object.keys(endpointData).length).toBe(9)
+            
+            })
         })
     })
     

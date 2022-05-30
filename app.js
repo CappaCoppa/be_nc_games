@@ -1,4 +1,5 @@
 
+const {getEndpoints} = require("./controllers/api.controller.js")
 const { getCategories , deleteComment } = require('./controllers/categories.controller')
 const {getReview, updateReview, getAllReviews, getCommentsById, postComment} = require('./controllers/review.controller.js')
 const getUsers = require("./controllers/users.controller.js")
@@ -7,6 +8,7 @@ const app = express();
 
 app.use(express.json())
 
+app.get('/api', getEndpoints)
 app.get('/api/categories', getCategories)
 app.get('/api/reviews/:review_id', getReview)
 app.patch('/api/reviews/:review_id', updateReview)
