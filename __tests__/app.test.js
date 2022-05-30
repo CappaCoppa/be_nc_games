@@ -90,7 +90,6 @@ describe('Reviews  get request testing block', () => {
     test("/api/reviews/3/comments return a list of comments with passed in review_id", () => {
         return request(app).get("/api/reviews/3/comments").expect(200).then((res) => {
             const {comments} = res.body;
-            console.log(comments)
             expect(comments.length).toEqual(3)
             comments.forEach(comment => {
                 expect(comment).toMatchObject({
@@ -219,7 +218,6 @@ describe('Reviews patch request test block', () => {
     test("Return an object with updated votes count", () => {
         return request(app).patch("/api/reviews/2").send({inc_votes : 100}).expect(200).then((res) => {
             const {updatedReview} = res.body
-            console.log(updatedReview)
             expect(updatedReview[0]).toEqual({
                 review_id: 2,
                 title: 'Jenga',
@@ -353,7 +351,7 @@ describe('Comments Post request testing block', () => {
     })
 
 describe("Api Get request testing block", () => {
-    test.only("/api returns a list of endpoints data" , () => {
+    test("/api returns a list of endpoints data" , () => {
         return request(app).get("/api").expect(200).then((res) => {
         const {endpointData} = res.body;
             expect(typeof endpointData).toBe("object")
