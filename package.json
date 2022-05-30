@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
+    "jest-sorted": "^1.0.14",
     "pg": "^8.7.3",
     "supertest": "^6.2.3"
   },

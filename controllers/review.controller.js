@@ -1,5 +1,5 @@
 const {fetchReview, updatedReview, fetchAllReviews,  fetchCommentsById, fetchPostedComment} = require('../models/review.model.js');
-const {checkReviewExists} = require("../models/util.model.js")
+const {checkReviewExists, checkCategoryExists} = require("../models/util.model.js")
 
 exports.getReview = (req, res, next) => {
     const id = parseInt(req.params.review_id);
@@ -26,8 +26,13 @@ exports.updateReview = (req, res, next) => {
 }
 
 exports.getAllReviews = (req,res,next) => {
-    fetchAllReviews().then(reviews => {
-        res.status(200).send({reviews})
+    Promise.all([checkCategoryExists(req.query.category), fetchAllReviews(req.query)]).then(promiseArray => {
+        if(!promiseArray[1].length){
+            res.status(200).send({msg : "review category exists but there are no associated reviews with it"})
+        }
+        res.status(200).send({reviews : promiseArray[1]})
+    }).catch(err => {
+        next(err)
     })
 }
 
