@@ -14,7 +14,7 @@ This Application programming interface-(API) is responsible for interacting with
 - Jest - Implemented for API request testing.
 
 ### Check out the hosted version of the API at - https://be-nc-games-heroku.herokuapp.com/
-### With the '/api' endpoint you will be able to get access to the list of the endpoints' documentation.
+### With the '/api' endpoint you will be able to get access to the list of the endpoints' documentation - https://be-nc-games-heroku.herokuapp.com/api
 
 ---
 
